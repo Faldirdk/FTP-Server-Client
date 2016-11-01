@@ -27,6 +27,7 @@ namespace FTP_Client
         //johnnyboy
         //pisoglort
    
+        //Søren Var her
         List<string> fuldFil = new List<string>();
         byte[] byteArr;
         string fileNameFullPath;
