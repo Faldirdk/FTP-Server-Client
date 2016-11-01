@@ -14,12 +14,12 @@ namespace FTP_Server
         {
             try
             {
-                IPAddress ipAd = IPAddress.Parse("127.0.0.1");
+                //IPAddress ipAd = IPAddress.Parse("127.0.0.1");
                 // use local m/c IP address, and 
                 // use the same in the client
 
                 /* Initializes the Listener */
-                TcpListener myList = new TcpListener(ipAd, 8001);
+                TcpListener myList = new TcpListener(IPAddress.Any, 8001);
 
                 /* Start Listeneting at the specified port */
                 myList.Start();

@@ -116,10 +116,6 @@ namespace FTP_Client
         }
         public void Connect()
         {
-            IPHostEntry ipHost = Dns.GetHostEntry("");
-            IPAddress ipAddr = ipHost.AddressList[0];
-            IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, 8001);
-
             tcpclnt = new TcpClient();
             Console.WriteLine("Connecting.....");
 
