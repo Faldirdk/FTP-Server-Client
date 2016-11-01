@@ -24,6 +24,10 @@ namespace FTP_Client
     /// </summary>
     public partial class MainWindow : Window
     {
+        //johnnyboy
+        //pisoglort
+        // Laksefætter
+        //Søren Var her
         List<string> fuldFil = new List<string>();
         byte[] byteArr;
         string fileNameFullPath;
