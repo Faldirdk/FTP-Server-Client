@@ -16,6 +16,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using Microsoft.Win32;
+using System.Threading;
 
 namespace FTP_Client
 {
@@ -43,7 +44,7 @@ namespace FTP_Client
 
             try
             {
-                Connect();            
+                Connect();
             }
             catch (Exception e)
             {
@@ -68,25 +69,25 @@ namespace FTP_Client
             {
                 case '\u0006':
                     if (connectBool)
-                    {                       
-                    block_Display.Text += "Acknowledgement received \n Connection established \n";
+                    {
+                        Dispatcher.Invoke(() => { block_Display.Text += "Acknowledgement received \n Connection established \n"; });
                         connectBool = false;
                     }
                     else if (EOFBool)
                     {
-                        block_Display.Text += "Acknowledgement received \n File transfered \n";
+                        Dispatcher.Invoke(() => { block_Display.Text += "Acknowledgement received \n File transfered \n"; }); 
                         EOFBool = false;
                     }
                     else if (fileNameBool)
                     {
-                        block_Display.Text += "Acknowledgement received \n Sending data... \n";
+                        Dispatcher.Invoke(() => { block_Display.Text += "Acknowledgement received \n Sending data... \n"; });
                         Send();
                         // EOF to server
                         fileNameBool = false;
                     }
                     break;
                 case '\u0019':
-                    block_Display.Text += "Negative acknowledgement received \n";
+                    Dispatcher.Invoke(() => { block_Display.Text += "Negative acknowledgement received \n"; });
                     break;
                 default:
                     break;
@@ -130,14 +131,6 @@ namespace FTP_Client
             stm = tcpclnt.GetStream();
 
             stm.Write(byteArr, 0, byteArr.Length);
-
-            //byte[] bb = new byte[5000];
-            //int k = stm.Read(bb, 0, 5000);
-
-            //for (int i = 0; i < k; i++)
-            //    Console.Write(Convert.ToChar(bb[i]));
-
-            //tcpclnt.Close();
         }
         public void Receive()
         {
@@ -146,16 +139,28 @@ namespace FTP_Client
 
         private void btn_Send_Click(object sender, RoutedEventArgs e)
         {
-            SendMessage(fileName);          
+            SendMessage(fileName);
             AddKontrolTegn(SOH);
             Send();
             fileNameBool = true;
+
+            Thread reader = new Thread(() =>
+            {
+                while (fileNameBool || connectBool || EOFBool)
+                {
+                    ReceiveServerMessages();
+                }
+            });
+            reader.Start();
+
             byteArr = File.ReadAllBytes(fileNameFullPath);
             Send();
             Receive();
             byteArr = File.ReadAllBytes(fileNameFullPath);
             Send();
         }
+
+
 
         private void SendMessage(string besked)
         {

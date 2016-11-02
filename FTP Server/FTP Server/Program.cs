@@ -3,12 +3,14 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
-
+using System.Threading;
 
 namespace FTP_Server
 {
     class Program
     {
+        static string filNavn = "";
+        static char kontrolChar;
         static FTPServer FTP = new FTPServer();
         static void Main(string[] args)
         {
@@ -38,20 +40,30 @@ namespace FTP_Server
                 s.Send(new byte[] { 0x06 });
                 Console.WriteLine("Sent Acknowledgement\n");
 
-                Receive(s);
+                Thread reader = new Thread(() =>
+                {
+                    while (true)
+                    {
+                        Receive(s);
+                    }
+                });
+                reader.Start();
+
+
+                
 
                 
 
                 byte[] b = new byte[1000];
                 int k = s.Receive(b);
                 //Console.WriteLine("Recieved...");
-                File.WriteAllBytes("filnavn.txt", b);
+                File.WriteAllBytes(filNavn, b);
 
 
 
                 /* clean up */
-                s.Close();
-                myList.Stop();
+                //s.Close();
+                //myList.Stop();
 
             }
             catch (Exception e)
@@ -64,11 +76,23 @@ namespace FTP_Server
         {
             byte[] d = new byte[1000];
             int f = s.Receive(d);
-            string byteToSting = Encoding.ASCII.GetString(d);
+            string byteToString = Encoding.ASCII.GetString(d);
 
-            char kontrolChar = byteToSting[0];
-            string orginalString = byteToSting.Substring(1).Trim('\0');
+            kontrolChar = byteToString[0];
+            filNavn = byteToString.Substring(1).Trim('\0');
 
+            switch (kontrolChar)
+            {
+                case '\u0001':
+                    s.Send(new byte[] { 0x06 });
+                    break;
+                case '\u0004':
+
+                default:
+                    
+                    break;
+            }
+            
         }
     }
 }
