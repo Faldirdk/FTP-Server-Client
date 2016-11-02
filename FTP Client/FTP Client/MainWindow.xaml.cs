@@ -30,6 +30,7 @@ namespace FTP_Client
         string fileNameFullPath;
         string fileName;
         byte SOH = 0x01;
+        byte EOF = 0x04;
         string messageReceived;
         TcpClient tcpclnt;
         Stream stm;
@@ -73,18 +74,18 @@ namespace FTP_Client
                         Dispatcher.Invoke(() => { block_Display.Text += "Acknowledgement received \n Connection established \n"; });
                         connectBool = false;
                     }
-                    else if (EOFBool)
+                    if (fileNameBool)
+                    {
+                        Dispatcher.Invoke(() => { block_Display.Text += "Acknowledgement received \n Sending data... \n"; });
+                        // EOF to server
+                        fileNameBool = false;
+                    }
+                    if (EOFBool)
                     {
                         Dispatcher.Invoke(() => { block_Display.Text += "Acknowledgement received \n File transfered \n"; }); 
                         EOFBool = false;
                     }
-                    else if (fileNameBool)
-                    {
-                        Dispatcher.Invoke(() => { block_Display.Text += "Acknowledgement received \n Sending data... \n"; });
-                        Send();
-                        // EOF to server
-                        fileNameBool = false;
-                    }
+                    
                     break;
                 case '\u0019':
                     Dispatcher.Invoke(() => { block_Display.Text += "Negative acknowledgement received \n"; });
@@ -113,6 +114,7 @@ namespace FTP_Client
                 // Open the selected file to read.
                 fileNameFullPath = openFileDialog1.FileName;
                 fileName = System.IO.Path.GetFileName(fileNameFullPath);
+                tbResults.Text = fileName;
             }
         }
         public void Connect()
@@ -155,9 +157,10 @@ namespace FTP_Client
 
             byteArr = File.ReadAllBytes(fileNameFullPath);
             Send();
-            Receive();
-            byteArr = File.ReadAllBytes(fileNameFullPath);
+            byteArr = new byte[] { EOF };
             Send();
+            EOFBool = true;
+
         }
 
 

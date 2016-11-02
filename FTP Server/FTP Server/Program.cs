@@ -12,6 +12,7 @@ namespace FTP_Server
         static string filNavn = "";
         static char kontrolChar;
         static FTPServer FTP = new FTPServer();
+    
         static void Main(string[] args)
         {
             try
@@ -52,12 +53,8 @@ namespace FTP_Server
 
                 
 
-                
-
-                byte[] b = new byte[1000];
-                int k = s.Receive(b);
-                //Console.WriteLine("Recieved...");
-                File.WriteAllBytes(filNavn, b);
+            
+                Console.WriteLine("Recieved...");
 
 
 
@@ -74,22 +71,24 @@ namespace FTP_Server
 
         private static void Receive(Socket s)
         {
-            byte[] d = new byte[1000];
+            byte[] d = new byte[100000000];
             int f = s.Receive(d);
             string byteToString = Encoding.ASCII.GetString(d);
 
             kontrolChar = byteToString[0];
-            filNavn = byteToString.Substring(1).Trim('\0');
+           
 
-            switch (kontrolChar)
+            switch (byteToString[0])
             {
                 case '\u0001':
+                    filNavn = byteToString.Substring(1).Trim('\0');
                     s.Send(new byte[] { 0x06 });
                     break;
                 case '\u0004':
-
+                    s.Send(new byte[] { 0x06 });
+                    break;
                 default:
-                    
+                    File.WriteAllBytes(filNavn, d);
                     break;
             }
             
