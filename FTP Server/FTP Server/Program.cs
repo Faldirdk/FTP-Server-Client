@@ -22,7 +22,7 @@ namespace FTP_Server
                 // use the same in the client
 
                 /* Initializes the Listener */
-                TcpListener myList = new TcpListener(IPAddress.Any, 8001);
+                TcpListener myList = new TcpListener(IPAddress.Parse("10.131.67.167") , 8001);
 
                 /* Start Listeneting at the specified port */
                 myList.Start();
@@ -73,6 +73,11 @@ namespace FTP_Server
         {
             byte[] d = new byte[100000000];
             int f = s.Receive(d);
+            byte[] df = new byte[f];
+            for (int i = 0; i < f; i++)
+            {
+                df[i] = d[i];
+            }
             string byteToString = Encoding.ASCII.GetString(d);
 
             kontrolChar = byteToString[0];
@@ -88,7 +93,7 @@ namespace FTP_Server
                     s.Send(new byte[] { 0x06 });
                     break;
                 default:
-                    File.WriteAllBytes(filNavn, d);
+                    File.WriteAllBytes(filNavn, df);
                     break;
             }
             
