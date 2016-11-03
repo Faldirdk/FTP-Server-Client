@@ -15,9 +15,9 @@ C:\Users\Mikkel\Desktop\Datamatiker\Opgaver\FTP Server\FTP Client\FTP Client\obj
 C:\Users\Mikkel\Documents\GitHub\FTP-Server-Client\FTP Client\FTP Client\bin\Debug\FTP Client.exe.config
 C:\Users\Mikkel\Documents\GitHub\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\FTP Client.exe
 C:\Users\Mikkel\Documents\GitHub\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\FTP Client.pdb
-C:\Users\Niels\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\bin\Debug\FTP Client.exe.config
-C:\Users\Niels\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\FTP Client.exe
-C:\Users\Niels\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\FTP Client.pdb
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\bin\Debug\FTP Client.exe.config
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\FTP Client.exe
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\FTP Client.pdb
 C:\Users\Mikkel\Documents\GitHub\FTP-Server-Client\FTP Client\FTP Client\bin\Debug\FTP Client.exe
 C:\Users\Mikkel\Documents\GitHub\FTP-Server-Client\FTP Client\FTP Client\bin\Debug\FTP Client.pdb
 C:\Users\Mikkel\Documents\GitHub\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\FTP Client.csprojResolveAssemblyReference.cache

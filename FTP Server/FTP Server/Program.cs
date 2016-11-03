@@ -3,13 +3,16 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
-
+using System.Threading;
 
 namespace FTP_Server
 {
     class Program
     {
+        static string filNavn = "";
+        static char kontrolChar;
         static FTPServer FTP = new FTPServer();
+    
         static void Main(string[] args)
         {
             try
@@ -19,7 +22,7 @@ namespace FTP_Server
                 // use the same in the client
 
                 /* Initializes the Listener */
-                TcpListener myList = new TcpListener(IPAddress.Any, 8001);
+                TcpListener myList = new TcpListener(IPAddress.Parse("10.131.67.167") , 8001);
 
                 /* Start Listeneting at the specified port */
                 myList.Start();
@@ -38,20 +41,26 @@ namespace FTP_Server
                 s.Send(new byte[] { 0x06 });
                 Console.WriteLine("Sent Acknowledgement\n");
 
-                Receive(s);
+                Thread reader = new Thread(() =>
+                {
+                    while (true)
+                    {
+                        Receive(s);
+                    }
+                });
+                reader.Start();
+
 
                 
 
-                byte[] b = new byte[1000];
-                int k = s.Receive(b);
-                //Console.WriteLine("Recieved...");
-                File.WriteAllBytes("filnavn.txt", b);
+            
+                Console.WriteLine("Recieved...");
 
 
 
                 /* clean up */
-                s.Close();
-                myList.Stop();
+                //s.Close();
+                //myList.Stop();
 
             }
             catch (Exception e)
@@ -62,13 +71,32 @@ namespace FTP_Server
 
         private static void Receive(Socket s)
         {
-            byte[] d = new byte[1000];
+            byte[] d = new byte[100000000];
             int f = s.Receive(d);
-            string byteToSting = Encoding.ASCII.GetString(d);
+            byte[] df = new byte[f];
+            for (int i = 0; i < f; i++)
+            {
+                df[i] = d[i];
+            }
+            string byteToString = Encoding.ASCII.GetString(d);
 
-            char kontrolChar = byteToSting[0];
-            string orginalString = byteToSting.Substring(1).Trim('\0');
+            kontrolChar = byteToString[0];
+           
 
+            switch (byteToString[0])
+            {
+                case '\u0001':
+                    filNavn = byteToString.Substring(1).Trim('\0');
+                    s.Send(new byte[] { 0x06 });
+                    break;
+                case '\u0004':
+                    s.Send(new byte[] { 0x06 });
+                    break;
+                default:
+                    File.WriteAllBytes(filNavn, df);
+                    break;
+            }
+            
         }
     }
 }
