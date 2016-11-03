@@ -29,3 +29,14 @@ C:\Users\Mikkel\Documents\GitHub\FTP-Server-Client\FTP Client\FTP Client\obj\Deb
 C:\Users\Mikkel\Documents\GitHub\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\FTP Client.g.resources
 C:\Users\Mikkel\Documents\GitHub\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\FTP_Client.Properties.Resources.resources
 C:\Users\Mikkel\Documents\GitHub\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\FTP Client.csproj.GenerateResource.Cache
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\bin\Debug\FTP Client.exe
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\bin\Debug\FTP Client.pdb
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\FTP Client.csprojResolveAssemblyReference.cache
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\MainWindow.g.cs
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\App.g.cs
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\FTP Client_MarkupCompile.cache
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\FTP Client_MarkupCompile.lref
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\MainWindow.baml
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\FTP Client.g.resources
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\FTP_Client.Properties.Resources.resources
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Client\FTP Client\obj\Debug\FTP Client.csproj.GenerateResource.Cache
