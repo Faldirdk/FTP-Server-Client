@@ -25,6 +25,7 @@ namespace FTP_Client
     /// </summary>
     public partial class MainWindow : Window
     {
+        //dsad
         List<string> fuldFil = new List<string>();
         byte[] byteArr;
         string fileNameFullPath;
