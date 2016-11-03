@@ -83,7 +83,12 @@ namespace FTP_Server
             string byteToString = Encoding.ASCII.GetString(d);
 
             kontrolChar = byteToString[0];
-
+            if (df[df.Length - 1] == '\u0004')
+            {
+                Console.WriteLine("Recieved EOF");
+                s.Send(new byte[] { 0x06 });
+                receivedEOF = true;
+            }
 
             switch (byteToString[0])
             {
@@ -92,11 +97,13 @@ namespace FTP_Server
                     s.Send(new byte[] { 0x06 });
                     Console.WriteLine("Recieved SOH");
                     break;
+                    /*
                 case '\u0004':
                     Console.WriteLine("Recieved EOF");
                     s.Send(new byte[] { 0x06 });
                     receivedEOF = true;
                     break;
+                    */
                 default:
                     //File.WriteAllBytes(filNavn, df);
                     while (receivedEOF == false)

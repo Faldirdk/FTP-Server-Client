@@ -13,3 +13,9 @@ C:\Users\Mikkel\Documents\GitHub\FTP-Server-Client\FTP Server\FTP Server\obj\Deb
 C:\Users\Mikkel\Documents\GitHub\FTP-Server-Client\FTP Server\FTP Server\bin\Debug\FTP Server.exe
 C:\Users\Mikkel\Documents\GitHub\FTP-Server-Client\FTP Server\FTP Server\bin\Debug\FTP Server.pdb
 C:\Users\Mikkel\Documents\GitHub\FTP-Server-Client\FTP Server\FTP Server\obj\Debug\FTP Server.csprojResolveAssemblyReference.cache
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Server\FTP Server\bin\Debug\FTP Server.exe.config
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Server\FTP Server\bin\Debug\FTP Server.exe
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Server\FTP Server\bin\Debug\FTP Server.pdb
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Server\FTP Server\obj\Debug\FTP Server.csprojResolveAssemblyReference.cache
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Server\FTP Server\obj\Debug\FTP Server.exe
+C:\Users\Søren\Source\Repos\FTP-Server-Client\FTP Server\FTP Server\obj\Debug\FTP Server.pdb
