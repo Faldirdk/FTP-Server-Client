@@ -11,8 +11,7 @@ namespace FTP_Server
     {
         static string filNavn = "";
         static char kontrolChar;
-        static FTPServer FTP = new FTPServer();
-    
+        static bool receivedEOF;
         static void Main(string[] args)
         {
             try
@@ -22,7 +21,7 @@ namespace FTP_Server
                 // use the same in the client
 
                 /* Initializes the Listener */
-                TcpListener myList = new TcpListener(IPAddress.Parse("10.131.67.167") , 8001);
+                TcpListener myList = new TcpListener(IPAddress.Parse("192.168.1.27"), 8001);
 
                 /* Start Listeneting at the specified port */
                 myList.Start();
@@ -45,16 +44,18 @@ namespace FTP_Server
                 {
                     while (true)
                     {
+
                         Receive(s);
+
                     }
                 });
                 reader.Start();
 
 
-                
 
-            
-                Console.WriteLine("Recieved...");
+
+
+                //Console.WriteLine("Recieved...");
 
 
 
@@ -71,7 +72,8 @@ namespace FTP_Server
 
         private static void Receive(Socket s)
         {
-            byte[] d = new byte[100000000];
+            receivedEOF = false;
+            byte[] d = new byte[100000];
             int f = s.Receive(d);
             byte[] df = new byte[f];
             for (int i = 0; i < f; i++)
@@ -81,22 +83,39 @@ namespace FTP_Server
             string byteToString = Encoding.ASCII.GetString(d);
 
             kontrolChar = byteToString[0];
-           
+
 
             switch (byteToString[0])
             {
                 case '\u0001':
                     filNavn = byteToString.Substring(1).Trim('\0');
                     s.Send(new byte[] { 0x06 });
+                    Console.WriteLine("Recieved SOH");
                     break;
                 case '\u0004':
+                    Console.WriteLine("Recieved EOF");
                     s.Send(new byte[] { 0x06 });
+                    receivedEOF = true;
                     break;
                 default:
-                    File.WriteAllBytes(filNavn, df);
+                    //File.WriteAllBytes(filNavn, df);
+                    while (receivedEOF == false)
+                    {
+                        AppendAllBytes(filNavn, df);
+                        Receive(s);                   
+                    }
                     break;
             }
-            
+
+        }
+        public static void AppendAllBytes(string path, byte[] bytes)
+        {
+            //argument-checking here.
+
+            using (var stream = new FileStream(path, FileMode.Append))
+            {
+                stream.Write(bytes, 0, bytes.Length);
+            }
         }
     }
 }
