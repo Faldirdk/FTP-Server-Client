@@ -93,9 +93,7 @@ namespace FTP_Server
                     s.Send(new byte[] { 0x06 });
                     break;
                 default:
-                    
                     File.WriteAllBytes(filNavn, df);
-                    
                     break;
             }
             

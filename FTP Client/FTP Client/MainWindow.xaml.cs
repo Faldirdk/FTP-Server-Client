@@ -32,10 +32,13 @@ namespace FTP_Client
         string fileName;
         byte SOH = 0x01;
         byte EOF = 0x04;
-        int counter = 0;
         string messageReceived;
         TcpClient tcpclnt;
-        Stream s;
+        Stream stm;
+
+        bool connectBool = false;
+        bool fileNameBool = false;
+        bool EOFBool = false;
 
         public MainWindow()
         {
@@ -50,14 +53,15 @@ namespace FTP_Client
                 Console.WriteLine("Error..... " + e.StackTrace);
             }
 
-            s = tcpclnt.GetStream();
             ReceiveServerMessages();
+
         }
 
         private void ReceiveServerMessages()
         {
-            byte[] getMessage = new byte[100];
-            int k = s.Read(getMessage, 0, 100);
+            Stream s = tcpclnt.GetStream();
+            byte[] getMessage = new byte[1000];
+            int k = s.Read(getMessage, 0, 1000);
             for (int i = 0; i < k; i++)
             {
                 messageReceived += Convert.ToChar(getMessage[i]);
@@ -66,36 +70,23 @@ namespace FTP_Client
             switch (messageReceived[0])
             {
                 case '\u0006':
-
-                    if (counter == 0)
+                    if (connectBool)
                     {
                         Dispatcher.Invoke(() => { block_Display.Text += "Acknowledgement received \n Connection established \n"; });
-                        
-                        counter++;
-                        
+                        connectBool = false;
                     }
-                    
-                    else if (counter == 1)
+                    if (fileNameBool)
                     {
                         Dispatcher.Invoke(() => { block_Display.Text += "Acknowledgement received \n Sending data... \n"; });
                         // EOF to server
-                        byteArr = File.ReadAllBytes(fileNameFullPath);
-                        Send();
-                        Thread.Sleep(100);
-                        byteArr = new byte[] { EOF };
-                        Send();
-                        Dispatcher.Invoke(() => { block_Display.Text += "EOF sent"; });
-
-                        counter++;
-
+                        fileNameBool = false;
                     }
-                    else if (counter == 2)
+                    if (EOFBool)
                     {
-                        Dispatcher.Invoke(() => { block_Display.Text += "Acknowledgement received \n File transfered \n"; });
-                        counter = 1;
-
+                        Dispatcher.Invoke(() => { block_Display.Text += "Acknowledgement received \n File transfered \n"; }); 
+                        EOFBool = false;
                     }
-
+                    
                     break;
                 case '\u0019':
                     Dispatcher.Invoke(() => { block_Display.Text += "Negative acknowledgement received \n"; });
@@ -103,7 +94,6 @@ namespace FTP_Client
                 default:
                     break;
             }
-            s.Flush();
         }
 
         private void btn_find_Click(object sender, RoutedEventArgs e)
@@ -133,37 +123,44 @@ namespace FTP_Client
             tcpclnt = new TcpClient();
             Console.WriteLine("Connecting.....");
 
-            tcpclnt.Connect("192.168.1.27", 8001);
+            tcpclnt.Connect("127.0.0.1", 8001);
             // use the ipaddress as in the server program
 
             Console.WriteLine("Connected");
-            
+            connectBool = true;
         }
         public void Send()
         {
-            //s = tcpclnt.GetStream();
-            
-            s.Write(byteArr, 0, byteArr.Length);
-            s.Flush();
+            stm = tcpclnt.GetStream();
+
+            stm.Write(byteArr, 0, byteArr.Length);
+        }
+        public void Receive()
+        {
 
         }
+
         private void btn_Send_Click(object sender, RoutedEventArgs e)
         {
-            if (counter == 2)
-            {
-                counter = 1;
-            }
-            Thread reader = new Thread(() =>
-            {
-                while (true)
-                {
-                        ReceiveServerMessages();
-                }
-            });
-            reader.Start();
             SendMessage(fileName);
             AddKontrolTegn(SOH);
             Send();
+            fileNameBool = true;
+
+            Thread reader = new Thread(() =>
+            {
+                while (fileNameBool || connectBool || EOFBool)
+                {
+                    ReceiveServerMessages();
+                }
+            });
+            reader.Start();
+
+            byteArr = File.ReadAllBytes(fileNameFullPath);
+            Send();
+            byteArr = new byte[] { EOF };
+            Send();
+            EOFBool = true;
 
         }
 
@@ -171,6 +168,7 @@ namespace FTP_Client
 
         private void SendMessage(string besked)
         {
+            stm = tcpclnt.GetStream();
             byteArr = Encoding.ASCII.GetBytes(besked);
         }
 
