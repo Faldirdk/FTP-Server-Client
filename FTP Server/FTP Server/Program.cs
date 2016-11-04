@@ -21,7 +21,9 @@ namespace FTP_Server
                 // use the same in the client
 
                 /* Initializes the Listener */
+                // Local TcpListener myList = new TcpListener(IPAddress.Parse("127.0.0.1"), 8001);
                 TcpListener myList = new TcpListener(IPAddress.Parse("192.168.1.27"), 8001);
+
 
                 /* Start Listeneting at the specified port */
                 myList.Start();

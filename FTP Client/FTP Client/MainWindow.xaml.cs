@@ -133,7 +133,10 @@ namespace FTP_Client
             tcpclnt = new TcpClient();
             Console.WriteLine("Connecting.....");
 
-            tcpclnt.Connect("192.168.1.27", 8001);
+            //tcpclnt.Connect("192.168.1.27", 8001);
+            // Local tcpclnt.Connect("127.0.0.1", 8001);
+            tcpclnt.Connect("10.131.67.167", 8001);
+
             // use the ipaddress as in the server program
 
             Console.WriteLine("Connected");
